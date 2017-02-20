@@ -17,6 +17,7 @@ import {
   VgDomain,
   VgSortField
 } from '../../vega.schema';
+import {binToString} from '../../bin';
 
 import * as util from '../../util';
 
@@ -113,8 +114,8 @@ function parseSingleChannelDomain(scale: Scale, model: Model, channel:Channel): 
     };
   } else if (fieldDef.bin) { // bin
     if (isBinScale(scale.type)) {
-      const field = model.getName(fieldDef.field + '_bins');
-      return {signal: `sequence(${field}.start, ${field}.stop + ${field}.step, ${field}.step)`};
+      const signal = model.getName(`${binToString(fieldDef.bin)}_${fieldDef.field}_bins`);
+      return {signal: `sequence(${signal}.start, ${signal}.stop + ${signal}.step, ${signal}.step)`};
     }
 
     if (hasDiscreteDomain(scale.type)) {
