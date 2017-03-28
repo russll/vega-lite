@@ -4,7 +4,7 @@ import {Axis, VL_ONLY_AXIS_PROPERTIES, VlOnlyAxisBase} from '../axis';
 import {Channel, NONSPATIAL_SCALE_CHANNELS, UNIT_CHANNELS, UNIT_SCALE_CHANNELS, X, X2,  Y, Y2} from '../channel';
 import {CellConfig, Config, defaultConfig} from '../config';
 import {SOURCE, SUMMARY} from '../data';
-import {dropInvalidFieldDefs, Encoding} from '../encoding';
+import {Encoding, normalizeEncoding} from '../encoding';
 import * as vlEncoding from '../encoding'; // TODO: remove
 import {field, FieldDef, FieldRefOption, isFieldDef} from '../fielddef';
 import {Legend} from '../legend';
@@ -69,7 +69,7 @@ export class UnitModel extends Model {
       parent ? parent['height'] : undefined; // only exists if parent is layer
 
     const mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
-    const encoding = this.encoding = dropInvalidFieldDefs(mark, spec.encoding || {});
+    const encoding = this.encoding = normalizeEncoding(spec.encoding || {}, mark);
 
     // TODO?: ideally we should use config only inside this constructor
     const config = this.config = this.initConfig(spec.config, parent);
